@@ -35,6 +35,7 @@ def do_cli(config: Union[Path, str] = Path("examples/"), **kwargs):
     parsed_cli_args, _ = parser.parse_args_into_dataclasses(
         return_remaining_strings=True
     )
+    parsed_cfg.use_dummy_trainer = kwargs.get("use_dummy_trainer", False)
     return do_train(parsed_cfg, parsed_cli_args)
 
 

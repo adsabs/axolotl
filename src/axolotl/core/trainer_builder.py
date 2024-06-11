@@ -259,6 +259,18 @@ class AxolotlKTOConfig(AxolotlTrainingMixins, KTOConfig):
     """
 
 
+class DummyTrainer(AxolotlTrainer):
+    """
+    Dummy trainer class for testing purposes.
+    """
+    def train(self, *args, **kwargs):
+        LOG.info("DummyTrainer: Training started.")
+        # Simulate training process
+        import time
+        time.sleep(2)
+        LOG.info("DummyTrainer: Training completed.")
+        return
+
 class AxolotlTrainer(Trainer):
     """
     Extend the base Trainer for axolotl helpers
@@ -1071,6 +1083,8 @@ class HFCausalTrainerBuilder(TrainerBuilderBase):
         return callbacks
 
     def _get_trainer_cls(self):
+        if self.cfg.use_dummy_trainer:
+            return DummyTrainer
         if self.cfg.lr_scheduler == "one_cycle" and (
             self.cfg.fsdp or self.cfg.adapter == "qlora"
         ):
